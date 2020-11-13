@@ -27,3 +27,20 @@ inquirer.prompt([
         name: "usage",
         message: "Please explain the usage for your project:"
     }
+]).then(function(response) {
+    let {name,gitname,title,description,usage} = response;
+    let avatarUrl;
+    let email;
+    let queryUrl = `https://api.github.com/users/${gitname}`;
+    axios.get(queryUrl).then(
+        (response) => {
+            //console.log(response);
+            avatarUrl = response.data.avatar_url;
+            
+            if(email==null) {
+                email = ".";
+            } else {
+                email = ", or email me at " + response.data.email + ".";
+            };
+
+            let filename = name.toLowerCase().split(' ').join('_') + ".md";
